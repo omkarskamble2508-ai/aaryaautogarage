@@ -46,13 +46,15 @@ app.post('/upload', upload.single('image'), (req, res) => {
 
 // Database connection
 const db = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "finalproject",
+    host: process.env.DB_HOST || "localhost",
+    port: process.env.DB_PORT || 3306,
+    user: process.env.DB_USER || "root",
+    password: process.env.DB_PASSWORD || "",
+    database: process.env.DB_NAME || "finalproject",
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+    ssl: process.env.DB_HOST ? { rejectUnauthorized: false } : undefined
 }).promise();
 
 console.log("Database connected successfully");
