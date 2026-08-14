@@ -457,7 +457,7 @@ app.post("/register", async (req, res) => {
 
         try {
             await transporter.sendMail({
-                from: FROM_ADDRESS,
+                from: `"${process.env.MAIL_FROM_NAME || 'AARYA AUTO GARAGE'}" <${process.env.MAIL_FROM_ADDRESS || 'aaryaautogarage@gmail.com'}>`,
                 to: email,
                 subject: "🎉 Welcome to Aarya Auto Garage — Your Account is Ready!",
                 html: `
@@ -816,7 +816,7 @@ app.post("/contact", async (req, res) => {
         const { name, email, message } = req.body;
         
         await transporter.sendMail({
-            from: FROM_ADDRESS,
+            from: `"${process.env.MAIL_FROM_NAME || 'AARYA AUTO GARAGE'}" <${process.env.MAIL_FROM_ADDRESS || 'aaryaautogarage@gmail.com'}>`,
             to: process.env.MAIL_FROM_ADDRESS || "aaryaautogarage@gmail.com",
             subject: `📩 New Contact Message from ${name} — Aarya Auto Garage`,
             html: `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
