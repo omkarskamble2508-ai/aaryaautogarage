@@ -1,65 +1,27 @@
-const axios = require("axios");
+const nodemailer = require("nodemailer");
 
 /**
- * Brevo (formerly Sendinblue) HTTP API Transporter
- * ─────────────────────────────────────────────
- * Replaces nodemailer because Render free tier blocks outbound SMTP ports (25, 465, 587).
- * This uses the standard HTTP port 443 which is never blocked.
+ * Brevo SMTP Transporter - Using Port 2525 to bypass Render blocks
  */
-const transporter = {
-    sendMail: async (mailOptions) => {
-        try {
-            // Helper to parse ' "Name" <email@domain.com> ' formats
-            const extractEmail = (str) => {
-                const match = str.match(/<([^>]+)>/);
-                return match ? match[1] : str.replace(/"[^"]+"/g, '').trim();
-            };
-            const extractName = (str) => {
-                const match = str.match(/"([^"]+)"/);
-                return match ? match[1] : undefined;
-            };
-
-            const senderEmail = extractEmail(mailOptions.from);
-            const senderName = extractName(mailOptions.from) || "AARYA AUTO GARAGE";
-            const recipientEmail = extractEmail(mailOptions.to);
-
-            const payload = {
-                sender: { name: senderName, email: senderEmail },
-                to: [{ email: recipientEmail }],
-                subject: mailOptions.subject,
-                htmlContent: mailOptions.html
-            };
-
-            const response = await axios.post("https://api.brevo.com/v3/smtp/email", payload, {
-                headers: {
-                    'accept': 'application/json',
-                    'api-key': process.env.BREVO_SMTP_KEY,
-                    'content-type': 'application/json'
-                }
-            });
-
-            console.log("[Brevo HTTP] Email sent successfully:", response.data);
-            return response.data;
-        } catch (error) {
-            console.error("[Brevo HTTP] Failed to send email:");
-            if (error.response) {
-                console.error(error.response.data);
-            } else {
-                console.error(error.message);
-            }
-            throw error;
-        }
+const transporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 2525, // Bypass Render port 587 block
+    secure: false, // STARTTLS
+    auth: {
+        user: process.env.BREVO_LOGIN || "b588b8001@smtp-brevo.com",
+        pass: process.env.BREVO_SMTP_KEY
     },
-    
-    // Mock the verify function so server startup doesn't crash
-    verify: (callback) => {
-        if (!process.env.BREVO_SMTP_KEY) {
-            callback(new Error("BREVO_SMTP_KEY is missing from environment variables!"), null);
-        } else {
-            console.log("[Brevo HTTP] Ready to send emails ✓");
-            callback(null, true);
-        }
+    tls: {
+        rejectUnauthorized: false
     }
-};
+});
+
+transporter.verify((err, _) => {
+    if (err) {
+        console.error("[Brevo SMTP 2525] Connection error:", err.message);
+    } else {
+        console.log("[Brevo SMTP 2525] Ready to send emails ✓");
+    }
+});
 
 module.exports = transporter;
