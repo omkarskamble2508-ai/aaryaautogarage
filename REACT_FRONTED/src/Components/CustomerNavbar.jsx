@@ -31,8 +31,8 @@ export default function CustomerNavbar() {
     if (!customerId) return;
     try {
       const [countRes, itemsRes] = await Promise.all([
-        axios.get(`http://localhost:3000/cart/count/${customerId}`),
-        axios.get(`http://localhost:3000/cart/${customerId}`)
+        axios.get(`https://aaryaautogarage.onrender.com/cart/count/${customerId}`),
+        axios.get(`https://aaryaautogarage.onrender.com/cart/${customerId}`)
       ]);
       setCartCount(Number(countRes.data.totalItems || 0));
       setCartItems(itemsRes.data);
@@ -48,7 +48,7 @@ export default function CustomerNavbar() {
 
   const removeFromCart = async (cartId) => {
     try {
-      await axios.delete(`http://localhost:3000/cart/remove/${cartId}`);
+      await axios.delete(`https://aaryaautogarage.onrender.com/cart/remove/${cartId}`);
       window.dispatchEvent(new Event("cartUpdated"));
     } catch {}
   };

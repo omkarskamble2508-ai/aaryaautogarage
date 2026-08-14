@@ -19,11 +19,11 @@ function Userlist() {
   const [totalPages,setTotalPages]=useState(1);
   const limit=10;
 
-  const load=async()=>{ const r=await axios.get(`http://localhost:3000/epagination?page=${page}&limit=${limit}`); setUsers(r.data.data); setTotalPages(r.data.totalPages); };
+  const load=async()=>{ const r=await axios.get(`https://aaryaautogarage.onrender.com/epagination?page=${page}&limit=${limit}`); setUsers(r.data.data); setTotalPages(r.data.totalPages); };
   useEffect(()=>{ load(); },[page]);
-  useEffect(()=>{ axios.get("http://localhost:3000/users").then(r=>setUsers(r.data)); },[]);
-  const del   = async(id)=>{ if(window.confirm("Delete this customer?")){ await axios.delete(`http://localhost:3000/users/${id}`); load(); } };
-  const srch  = async()=>{ const r=await axios.post("http://localhost:3000/search",{name:search,email:search}); setUsers(r.data); };
+  useEffect(()=>{ axios.get("https://aaryaautogarage.onrender.com/users").then(r=>setUsers(r.data)); },[]);
+  const del   = async(id)=>{ if(window.confirm("Delete this customer?")){ await axios.delete(`https://aaryaautogarage.onrender.com/users/${id}`); load(); } };
+  const srch  = async()=>{ const r=await axios.post("https://aaryaautogarage.onrender.com/search",{name:search,email:search}); setUsers(r.data); };
   const reset = ()=>{ setSearch(""); load(); };
 
   return (

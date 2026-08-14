@@ -28,7 +28,7 @@ function AdminSparePartsView() {
 
   const load = async () => {
     setLoading(true);
-    try { const r = await axios.get("http://localhost:3000/spare_parts"); setParts(r.data); setFiltered(r.data); }
+    try { const r = await axios.get("https://aaryaautogarage.onrender.com/spare_parts"); setParts(r.data); setFiltered(r.data); }
     catch(e){ console.error(e); } finally { setLoading(false); }
   };
   useEffect(()=>{ load(); },[]);
@@ -60,7 +60,7 @@ function AdminSparePartsView() {
     if(isNaN(n)||n<0){toast.warning("Enter a valid quantity (0 or more)");return;}
     setSavingId(partId);
     try{
-      await axios.put(`http://localhost:3000/spare_parts/${partId}`,{stock_quantity:n});
+      await axios.put(`https://aaryaautogarage.onrender.com/spare_parts/${partId}`,{stock_quantity:n});
       setParts(prev=>prev.map(p=>p.part_id===partId?{...p,stock_quantity:n}:p));
       setEditingStock(null);
       toast.success("Stock updated successfully!");

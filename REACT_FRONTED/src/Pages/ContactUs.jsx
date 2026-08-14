@@ -65,7 +65,7 @@ function ContactUs() {
 
     setStatus("sending");
     try {
-      await axios.post("http://localhost:3000/contact", data);
+      await axios.post("https://aaryaautogarage.onrender.com/contact", data);
       setStatus("sent");
       e.target.reset();
       setTimeout(() => setStatus("idle"), 5000);

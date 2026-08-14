@@ -57,7 +57,7 @@ function Register() {
     if (!validate()) return;
     setLoading(true);
     try {
-      await axios.post("http://localhost:3000/register", user);
+      await axios.post("https://aaryaautogarage.onrender.com/register", user);
       toast.success("Account created! Redirecting to sign in…");
       setTimeout(() => navigate("/"), 1000);
     } catch { toast.error("Registration failed. Please try again."); }

@@ -27,7 +27,7 @@ function Dashboard() {
         try {
 
             setLoading(true);
-            const res = await axios.get("http://localhost:3000/dashboard/stats");
+            const res = await axios.get("https://aaryaautogarage.onrender.com/dashboard/stats");
             setStats(res.data);
 
         } catch (err) {

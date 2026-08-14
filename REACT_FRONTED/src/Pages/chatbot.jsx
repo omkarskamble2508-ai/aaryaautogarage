@@ -21,7 +21,7 @@ const GPT_SUGGESTIONS = [
   "Explain the difference between disc and drum brakes", "Tips for bike maintenance in monsoon",
 ];
 
-const API = "http://localhost:3000";
+const API = "https://aaryaautogarage.onrender.com";
 
 function ChatBot() {
   const [mode, setMode] = useState("aarya");

@@ -20,10 +20,10 @@ function ProductList() {
   const [totalPages,setTotalPages]=useState(1);
   const limit=10;
 
-  const load = async()=>{ const r=await axios.get(`http://localhost:3000/pagination?page=${page}&limit=${limit}`); setProducts(r.data.data); setTotalPages(r.data.totalPages); };
+  const load = async()=>{ const r=await axios.get(`https://aaryaautogarage.onrender.com/pagination?page=${page}&limit=${limit}`); setProducts(r.data.data); setTotalPages(r.data.totalPages); };
   useEffect(()=>{ load(); },[page]);
-  const del = async(pid)=>{ if(window.confirm("Delete this product?")){ await axios.delete(`http://localhost:3000/Product/${pid}`); load(); } };
-  const search = async()=>{ const r=await axios.post("http://localhost:3000/psearch",{customer_name:psearch}); setProducts(r.data); };
+  const del = async(pid)=>{ if(window.confirm("Delete this product?")){ await axios.delete(`https://aaryaautogarage.onrender.com/Product/${pid}`); load(); } };
+  const search = async()=>{ const r=await axios.post("https://aaryaautogarage.onrender.com/psearch",{customer_name:psearch}); setProducts(r.data); };
   const reset  = ()=>{ setpsearch(""); load(); };
 
   return (

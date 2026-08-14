@@ -8,7 +8,7 @@ function Search() {
 
     const searchUser = async () => {
         const res = await axios.get(
-            `http://localhost:3000/search?keyword=${keyword}`
+            `https://aaryaautogarage.onrender.com/search?keyword=${keyword}`
         );
 
         setUsers(res.data);

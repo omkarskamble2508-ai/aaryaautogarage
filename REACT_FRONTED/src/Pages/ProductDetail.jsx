@@ -22,7 +22,7 @@ export default function ProductDetail() {
   const [buying, setBuying] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/spare_parts/${id}`)
+    axios.get(`https://aaryaautogarage.onrender.com/spare_parts/${id}`)
       .then(r => setPart(r.data))
       .catch(() => toast.error("Product not found"))
       .finally(() => setLoading(false));
@@ -53,7 +53,7 @@ export default function ProductDetail() {
     if (oos) return;
     if (!customerId) { toast.warning("Please log in to add products to the cart."); navigate("/login"); return; }
     try {
-      await axios.post("http://localhost:3000/cart/add", { customer_id: customerId, part_id: part.part_id });
+      await axios.post("https://aaryaautogarage.onrender.com/cart/add", { customer_id: customerId, part_id: part.part_id });
       window.dispatchEvent(new Event("cartUpdated"));
       setAdded(true);
       toast.success("Added to cart!");
@@ -66,7 +66,7 @@ export default function ProductDetail() {
     if (!customerId) { toast.warning("Please log in to proceed with the purchase."); navigate("/login"); return; }
     setBuying(true);
     try {
-      await axios.post("http://localhost:3000/cart/add", { customer_id: customerId, part_id: part.part_id });
+      await axios.post("https://aaryaautogarage.onrender.com/cart/add", { customer_id: customerId, part_id: part.part_id });
       window.dispatchEvent(new Event("cartUpdated"));
       navigate("/checkout");
     } catch { toast.error("Could not process Buy Now"); setBuying(false); }

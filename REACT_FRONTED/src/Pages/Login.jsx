@@ -44,7 +44,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:3000/login", login);
+      const res = await axios.post("https://aaryaautogarage.onrender.com/login", login);
       if (res.data.flag > 0) {
         localStorage.setItem("ID", res.data.uid);
         localStorage.setItem("Name", res.data.uname);

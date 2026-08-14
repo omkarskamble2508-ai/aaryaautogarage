@@ -59,7 +59,7 @@ export default function MyOrders() {
 
   useEffect(() => {
     if (!customerId) { navigate("/login"); return; }
-    axios.get(`http://localhost:3000/orders/customer/${customerId}`)
+    axios.get(`https://aaryaautogarage.onrender.com/orders/customer/${customerId}`)
       .then(r => setOrders(r.data)).catch(() => {}).finally(() => setLoading(false));
   }, []);
 

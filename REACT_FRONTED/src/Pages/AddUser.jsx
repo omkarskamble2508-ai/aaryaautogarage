@@ -17,7 +17,7 @@ function AddUser() {
 
   const change=(e)=>{ const{name,value}=e.target; setUser({...user,[name]:value}); let err=""; if(name==="email"&&!/\S+@\S+\.\S+/.test(value))err="Invalid email"; if(name==="password"&&value.length<6)err="Min. 6 chars"; setErrors({...errors,[name]:err}); };
   const validate=()=>{ const e={}; if(!user.name.trim())e.name="Required"; if(!user.email)e.email="Required"; else if(!/\S+@\S+\.\S+/.test(user.email))e.email="Invalid email"; if(!user.password)e.password="Required"; else if(user.password.length<6)e.password="Min. 6 chars"; setErrors(e); return Object.keys(e).length===0; };
-  const submit=async(e)=>{ e.preventDefault(); if(!validate())return; setLoading(true); try{ await axios.post("http://localhost:3000/users",user); navigate("/users"); }catch{toast.error("Failed to create user.");} finally{setLoading(false);} };
+  const submit=async(e)=>{ e.preventDefault(); if(!validate())return; setLoading(true); try{ await axios.post("https://aaryaautogarage.onrender.com/users",user); navigate("/users"); }catch{toast.error("Failed to create user.");} finally{setLoading(false);} };
 
   return (
     <Sidebar>

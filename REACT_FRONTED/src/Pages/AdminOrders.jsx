@@ -26,10 +26,10 @@ export default function AdminOrders() {
   const [activeTab,setActiveTab]=useState("Ordered");
   const tabs=["Ordered","Accepted","Delivered","Declined"];
 
-  const fetch=()=>{ setLoading(true); axios.get("http://localhost:3000/orders/admin").then(r=>setOrders(r.data)).catch(()=>toast.error("Error loading orders")).finally(()=>setLoading(false)); };
+  const fetch=()=>{ setLoading(true); axios.get("https://aaryaautogarage.onrender.com/orders/admin").then(r=>setOrders(r.data)).catch(()=>toast.error("Error loading orders")).finally(()=>setLoading(false)); };
   useEffect(()=>{ if(sessionStorage.getItem("ADMIN_AUTH")!=="true"){navigate("/admin");return;} fetch(); },[]);
 
-  const updateStatus=async(id,s)=>{ try{ await axios.put(`http://localhost:3000/orders/admin/${id}`,{status:s}); fetch(); toast.success(`Order ${s.toLowerCase()} successfully.`); }catch{ toast.error("Error updating order status"); } };
+  const updateStatus=async(id,s)=>{ try{ await axios.put(`https://aaryaautogarage.onrender.com/orders/admin/${id}`,{status:s}); fetch(); toast.success(`Order ${s.toLowerCase()} successfully.`); }catch{ toast.error("Error updating order status"); } };
   const filtered=orders.filter(o=>o.status===activeTab);
 
   return (

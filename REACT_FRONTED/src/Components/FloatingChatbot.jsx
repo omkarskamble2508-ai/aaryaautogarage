@@ -10,7 +10,7 @@ const T = {
 
 const AARYA_SUGGESTIONS = ["Parts for Honda Activa", "Show me brake pads", "What are your shop timings?"];
 const GPT_SUGGESTIONS   = ["What causes engine overheating?", "How often to change engine oil?", "Disc vs drum brakes?"];
-const API = "http://localhost:3000";
+const API = "https://aaryaautogarage.onrender.com";
 
 const formatText = (text) => {
   if (!text) return null;

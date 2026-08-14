@@ -18,8 +18,8 @@ function AddProduct() {
 
   const change=(e)=>{ const{name,value}=e.target; setProduct({...product,[name]:value}); let err=""; if(name==="price"&&Number(value)<0)err="Invalid Price"; setErrors({...errors,[name]:err}); };
   const validate=()=>{ const e={}; if(!product.part_name.trim())e.part_name="Required"; if(!product.price)e.price="Required"; else if(Number(product.price)<0)e.price="Invalid"; setErrors(e); return Object.keys(e).length===0; };
-  const upload=async()=>{ if(!image)return toast.warning("Select an image first"); const f=new FormData(); f.append("image",image); setUploading(true); try{ const r=await axios.post("http://localhost:3000/upload",f); setProduct({...product,image:r.data.image}); toast.success("Image uploaded!"); }catch{toast.error("Upload failed");} finally{setUploading(false);} };
-  const submit=async(e)=>{ e.preventDefault(); if(!validate())return; setLoading(true); try{ await axios.post("http://localhost:3000/Product",product); navigate("/productlist"); }catch{toast.error("Failed to save product");} finally{setLoading(false);} };
+  const upload=async()=>{ if(!image)return toast.warning("Select an image first"); const f=new FormData(); f.append("image",image); setUploading(true); try{ const r=await axios.post("https://aaryaautogarage.onrender.com/upload",f); setProduct({...product,image:r.data.image}); toast.success("Image uploaded!"); }catch{toast.error("Upload failed");} finally{setUploading(false);} };
+  const submit=async(e)=>{ e.preventDefault(); if(!validate())return; setLoading(true); try{ await axios.post("https://aaryaautogarage.onrender.com/Product",product); navigate("/productlist"); }catch{toast.error("Failed to save product");} finally{setLoading(false);} };
 
   const FIELDS=[
     {label:"Product Name",name:"part_name",type:"text",   ph:"Enter product name"},

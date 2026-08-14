@@ -26,7 +26,7 @@ function SparePartsList() {
     const loadParts = async () => {
         try {
             setLoading(true);
-            const res = await axios.get("http://localhost:3000/spare_parts");
+            const res = await axios.get("https://aaryaautogarage.onrender.com/spare_parts");
             setParts(res.data);
             setFilteredParts(res.data);
         } catch (err) {
@@ -40,7 +40,7 @@ function SparePartsList() {
     const loadCartCount = async () => {
         if (!customerId) return;
         try {
-            const res = await axios.get(`http://localhost:3000/cart/count/${customerId}`);
+            const res = await axios.get(`https://aaryaautogarage.onrender.com/cart/count/${customerId}`);
             setCartCount(res.data.totalItems);
         } catch (err) {
             console.error("Error loading cart count:", err);
@@ -51,7 +51,7 @@ function SparePartsList() {
     const loadCartItems = async () => {
         if (!customerId) return;
         try {
-            const res = await axios.get(`http://localhost:3000/cart/${customerId}`);
+            const res = await axios.get(`https://aaryaautogarage.onrender.com/cart/${customerId}`);
             setCartItems(res.data);
         } catch (err) {
             console.error("Error loading cart items:", err);
@@ -105,7 +105,7 @@ function SparePartsList() {
         setAddingId(partId);
 
         try {
-            await axios.post("http://localhost:3000/cart/add", {
+            await axios.post("https://aaryaautogarage.onrender.com/cart/add", {
                 customer_id: customerId,
                 part_id: partId,
             });
@@ -121,7 +121,7 @@ function SparePartsList() {
     // Remove from cart
     const removeFromCart = async (cartId) => {
         try {
-            await axios.delete(`http://localhost:3000/cart/remove/${cartId}`);
+            await axios.delete(`https://aaryaautogarage.onrender.com/cart/remove/${cartId}`);
             await loadCartItems();
             await loadCartCount();
         } catch (err) {

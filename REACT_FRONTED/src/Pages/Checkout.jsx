@@ -47,7 +47,7 @@ function Checkout() {
 
   useEffect(() => {
     if (!customerId) { navigate("/login"); return; }
-    axios.get(`http://localhost:3000/cart/${customerId}`)
+    axios.get(`https://aaryaautogarage.onrender.com/cart/${customerId}`)
       .then(r => setCartItems(r.data)).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
@@ -58,7 +58,7 @@ function Checkout() {
     }
     setConfirmStatus("confirming");
     try {
-      await axios.post("http://localhost:3000/orders/create", { customer_id: customerId, mobile_number: mobileNumber });
+      await axios.post("https://aaryaautogarage.onrender.com/orders/create", { customer_id: customerId, mobile_number: mobileNumber });
       window.dispatchEvent(new Event("cartUpdated"));
       setConfirmStatus("confirmed");
       setTimeout(() => navigate("/my-orders"), 3500);
@@ -71,7 +71,7 @@ function Checkout() {
   const updateQuantity = async (cartId, newQuantity) => {
     if (newQuantity < 1) return;
     try {
-      await axios.put(`http://localhost:3000/cart/update/${cartId}`, { quantity: newQuantity });
+      await axios.put(`https://aaryaautogarage.onrender.com/cart/update/${cartId}`, { quantity: newQuantity });
       setCartItems(prev => prev.map(item => item.cart_id === cartId ? { ...item, quantity: newQuantity } : item));
       window.dispatchEvent(new Event("cartUpdated"));
     } catch { toast.error("Error updating quantity"); }

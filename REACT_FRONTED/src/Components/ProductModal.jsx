@@ -21,7 +21,7 @@ export default function ProductModal({ part, onClose, customerId }) {
     e.stopPropagation();
     if (oos) return;
     try {
-      await axios.post("http://localhost:3000/cart/add", { customer_id: customerId, part_id: part.part_id });
+      await axios.post("https://aaryaautogarage.onrender.com/cart/add", { customer_id: customerId, part_id: part.part_id });
       window.dispatchEvent(new Event("cartUpdated"));
       setAdded(true);
       setTimeout(() => setAdded(false), 1200);
@@ -33,7 +33,7 @@ export default function ProductModal({ part, onClose, customerId }) {
     if (oos) return;
     setBuying(true);
     try {
-      await axios.post("http://localhost:3000/cart/add", { customer_id: customerId, part_id: part.part_id });
+      await axios.post("https://aaryaautogarage.onrender.com/cart/add", { customer_id: customerId, part_id: part.part_id });
       window.dispatchEvent(new Event("cartUpdated"));
       navigate("/checkout");
     } catch {
