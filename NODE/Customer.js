@@ -485,7 +485,7 @@ app.post("/register", async (req, res) => {
                                         <p style="margin:0 0 30px;color:#475569;font-size:15px;line-height:1.75;">Browse thousands of quality-tested parts, place orders with ease, and track your deliveries — all from one place.</p>
                                         <!-- CTA BUTTON -->
                                         <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:10px 0 35px;">
-                                            <a href="http://localhost:5173/login" style="background:linear-gradient(135deg,#E84A2F,#c23b22);color:#FFFFFF;padding:16px 42px;text-decoration:none;border-radius:50px;font-weight:700;font-size:15px;display:inline-block;letter-spacing:0.5px;box-shadow:0 6px 20px rgba(232,74,47,0.35);">
+                                            <a href="https://aaryaautogarage.pages.dev/login" style="background:linear-gradient(135deg,#E84A2F,#c23b22);color:#FFFFFF;padding:16px 42px;text-decoration:none;border-radius:50px;font-weight:700;font-size:15px;display:inline-block;letter-spacing:0.5px;box-shadow:0 6px 20px rgba(232,74,47,0.35);">
                                                 🚀 &nbsp; Login to Your Account
                                             </a>
                                         </td></tr></table>

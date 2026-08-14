@@ -740,7 +740,7 @@ module.exports = function (db) {
         </td></tr>
     </table>
     <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
-        <a href="http://localhost:5173/myorders" style="background:linear-gradient(135deg,#E84A2F,#c23b22);color:#FFFFFF;padding:13px 36px;text-decoration:none;border-radius:50px;font-weight:700;font-size:14px;display:inline-block;box-shadow:0 4px 16px rgba(232,74,47,0.3);">📦 Track My Order</a>
+        <a href="https://aaryaautogarage.pages.dev/myorders" style="background:linear-gradient(135deg,#E84A2F,#c23b22);color:#FFFFFF;padding:13px 36px;text-decoration:none;border-radius:50px;font-weight:700;font-size:14px;display:inline-block;box-shadow:0 4px 16px rgba(232,74,47,0.3);">📦 Track My Order</a>
     </td></tr></table>
 </td></tr>
 <tr><td style="background:linear-gradient(145deg,#0F172A,#1E293B);padding:28px 40px;text-align:center;border-top:3px solid #E84A2F;">
@@ -805,7 +805,7 @@ module.exports = function (db) {
     </table>
 
     <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
-        <a href="http://localhost:5173/admin/orders" style="background:linear-gradient(135deg,#E84A2F,#c23b22);color:#FFFFFF;padding:13px 36px;text-decoration:none;border-radius:50px;font-weight:700;font-size:14px;display:inline-block;box-shadow:0 4px 16px rgba(232,74,47,0.3);">🖥️ Open Admin Panel</a>
+        <a href="https://aaryaautogarage.pages.dev/admin/orders" style="background:linear-gradient(135deg,#E84A2F,#c23b22);color:#FFFFFF;padding:13px 36px;text-decoration:none;border-radius:50px;font-weight:700;font-size:14px;display:inline-block;box-shadow:0 4px 16px rgba(232,74,47,0.3);">🖥️ Open Admin Panel</a>
     </td></tr></table>
 </td></tr>
 <tr><td style="background:linear-gradient(145deg,#0F172A,#1E293B);padding:28px 40px;text-align:center;border-top:3px solid #E84A2F;">
