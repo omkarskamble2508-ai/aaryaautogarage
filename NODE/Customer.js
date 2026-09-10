@@ -402,12 +402,12 @@ app.post("/chat", async (req, res) => {
 // Tries multiple free models with fallback chain
 // =============================================
 
-// Free models to try in order (fallback chain)
+// Free models — verified working on OpenRouter (updated 2026-09)
 const FREE_MODELS = [
-    "meta-llama/llama-3.2-3b-instruct:free",
-    "mistralai/mistral-7b-instruct:free",
-    "google/gemma-3-1b-it:free",
-    "qwen/qwen-2.5-7b-instruct:free",
+    "nvidia/nemotron-3.5-lightning:free",   // ✅ Fast, verified working
+    "nex-agi/nex-n2.5-mini:free",           // ✅ Verified working
+    "nex-agi/nex-n2.5-pro:free",            // ✅ Pro variant
+    "liquid/lfm-2.5-2.6b:free",             // ✅ Lightweight fallback
 ];
 
 const SYSTEM_PROMPT = "You are an intelligent customer support assistant for Aarya Auto Garage, a two-wheeler spare parts shop and repair garage located in Solankur, Radhanagari, Maharashtra. Help users with questions about bike spare parts, automotive repairs, bike models (Hero, Honda, Bajaj, TVS, Yamaha, etc.), garage services, and related topics. Be polite, helpful, and concise.";
