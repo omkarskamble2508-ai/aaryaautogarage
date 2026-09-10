@@ -398,9 +398,20 @@ app.post("/chat", async (req, res) => {
 });
 
 // =============================================
-// GPT-OSS ROUTE — External AI (opt-in only)
-// Customer must explicitly switch to this mode
+// GPT ROUTE — External AI (opt-in only)
+// Tries multiple free models with fallback chain
 // =============================================
+
+// Free models to try in order (fallback chain)
+const FREE_MODELS = [
+    "meta-llama/llama-3.2-3b-instruct:free",
+    "mistralai/mistral-7b-instruct:free",
+    "google/gemma-3-1b-it:free",
+    "qwen/qwen-2.5-7b-instruct:free",
+];
+
+const SYSTEM_PROMPT = "You are an intelligent customer support assistant for Aarya Auto Garage, a two-wheeler spare parts shop and repair garage located in Solankur, Radhanagari, Maharashtra. Help users with questions about bike spare parts, automotive repairs, bike models (Hero, Honda, Bajaj, TVS, Yamaha, etc.), garage services, and related topics. Be polite, helpful, and concise.";
+
 app.post("/chat-gpt", async (req, res) => {
     try {
         const { message } = req.body;
@@ -408,24 +419,48 @@ app.post("/chat-gpt", async (req, res) => {
             return res.status(400).json({ reply: "Message is required." });
         }
 
-        const response = await openAiClient.chat.completions.create({
-            model: "openai/gpt-oss-20b:free",
-            messages: [
-                {
-                    role: "system",
-                    content: "You are an intelligent customer support assistant for Aarya Auto Garage, a two-wheeler spare parts shop and repair garage. Help users with questions about bike spare parts, automotive repairs, bike models, garage services, and related topics. Be polite, helpful, and concise."
-                },
-                { role: "user", content: message }
-            ],
+        let reply = null;
+        let lastError = null;
+
+        // Try each model in fallback order
+        for (const model of FREE_MODELS) {
+            try {
+                const response = await openAiClient.chat.completions.create({
+                    model,
+                    messages: [
+                        { role: "system", content: SYSTEM_PROMPT },
+                        { role: "user", content: message }
+                    ],
+                    max_tokens: 500,
+                });
+
+                const content = response.choices?.[0]?.message?.content;
+                if (content && content.trim()) {
+                    reply = content.trim();
+                    console.log(`[GPT] Responded using model: ${model}`);
+                    break;
+                }
+            } catch (modelErr) {
+                lastError = modelErr;
+                console.warn(`[GPT] Model ${model} failed:`, modelErr?.message || modelErr);
+                // continue to next model
+            }
+        }
+
+        if (reply) {
+            return res.json({ reply });
+        }
+
+        // All models failed
+        console.error("[GPT] All models failed. Last error:", lastError?.message || lastError);
+        res.status(503).json({
+            reply: "⚠️ AI Assistant is temporarily unavailable. Please use **Aarya Bot** mode — it can answer questions about parts, prices, stock and our services. Or call us at +91 8600281001.",
         });
 
-        const reply = response.choices?.[0]?.message?.content || "No response received.";
-        res.json({ reply });
-
     } catch (error) {
-        console.error("GPT-OSS Error:", error?.message || error);
+        console.error("GPT Route Error:", error?.message || error);
         res.status(500).json({
-            reply: "⚠️ AI Assistant is currently unavailable. Please try **Aarya Bot** mode or contact us at +91 98765 43210.",
+            reply: "⚠️ Something went wrong. Please try **Aarya Bot** mode or contact us at +91 8600281001.",
         });
     }
 });
