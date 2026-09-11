@@ -458,6 +458,26 @@ module.exports = function (db) {
                 });
             }
 
+            // Check current stock and existing cart quantity
+            const [[partRow]] = await db.query(
+                "SELECT stock_quantity FROM spare_parts WHERE part_id = ?", [part_id]
+            );
+            if (!partRow) {
+                return res.status(404).json({ message: "Product not found" });
+            }
+
+            const [[cartRow]] = await db.query(
+                "SELECT quantity FROM cart WHERE customer_id = ? AND part_id = ?",
+                [customer_id, part_id]
+            );
+            const currentQty = cartRow ? cartRow.quantity : 0;
+
+            if (currentQty >= partRow.stock_quantity) {
+                return res.status(400).json({
+                    message: `Only ${partRow.stock_quantity} item(s) available in stock`
+                });
+            }
+
             // Use INSERT ... ON DUPLICATE KEY to handle re-adding same item
             const sql = `
                 INSERT INTO cart (customer_id, part_id, quantity, added_at)
@@ -540,6 +560,19 @@ module.exports = function (db) {
             if (!quantity || quantity < 1) {
                 return res.status(400).json({
                     message: "Quantity must be at least 1"
+                });
+            }
+
+            // Stock validation: check available stock before updating
+            const [cartRows] = await db.query(
+                `SELECT sp.stock_quantity FROM cart c
+                 JOIN spare_parts sp ON c.part_id = sp.part_id
+                 WHERE c.cart_id = ?`,
+                [cart_id]
+            );
+            if (cartRows.length > 0 && quantity > cartRows[0].stock_quantity) {
+                return res.status(400).json({
+                    message: `Only ${cartRows[0].stock_quantity} item(s) available in stock`
                 });
             }
 
@@ -628,9 +661,9 @@ module.exports = function (db) {
         try {
             const { customer_id, mobile_number } = req.body;
             
-            // Get cart items
+            // Get cart items with current stock
             const [cartItems] = await db.query(`
-                SELECT c.part_id, c.quantity, sp.price, sp.part_name, sp.image 
+                SELECT c.part_id, c.quantity, sp.price, sp.part_name, sp.image, sp.stock_quantity
                 FROM cart c 
                 JOIN spare_parts sp ON c.part_id = sp.part_id 
                 WHERE c.customer_id = ?
@@ -638,6 +671,17 @@ module.exports = function (db) {
             
             if (cartItems.length === 0) {
                 return res.status(400).json({ message: "Cart is empty" });
+            }
+
+            // ── STOCK VALIDATION ──
+            const insufficientItems = cartItems.filter(item => item.quantity > item.stock_quantity);
+            if (insufficientItems.length > 0) {
+                const details = insufficientItems.map(item =>
+                    `${item.part_name} (Requested: ${item.quantity}, Available: ${item.stock_quantity})`
+                ).join(", ");
+                return res.status(400).json({
+                    message: `Insufficient stock for: ${details}`
+                });
             }
 
             // Calculate total

@@ -62,8 +62,10 @@ function Checkout() {
       window.dispatchEvent(new Event("cartUpdated"));
       setConfirmStatus("confirmed");
       setTimeout(() => navigate("/my-orders"), 3500);
-    } catch {
-      toast.error("Error confirming order. Please try again.");
+    } catch (err) {
+      // Show the exact error message from backend (e.g. insufficient stock)
+      const msg = err?.response?.data?.message || "Error confirming order. Please try again.";
+      toast.error(msg);
       setConfirmStatus("idle");
     }
   };
@@ -74,7 +76,10 @@ function Checkout() {
       await axios.put(`https://aaryaautogarage.onrender.com/cart/update/${cartId}`, { quantity: newQuantity });
       setCartItems(prev => prev.map(item => item.cart_id === cartId ? { ...item, quantity: newQuantity } : item));
       window.dispatchEvent(new Event("cartUpdated"));
-    } catch { toast.error("Error updating quantity"); }
+    } catch (err) {
+      const msg = err?.response?.data?.message || "Error updating quantity";
+      toast.error(msg);
+    }
   };
 
   const total      = cartItems.reduce((a, i) => a + i.price * i.quantity, 0);
@@ -247,8 +252,23 @@ function Checkout() {
                               <button onClick={() => updateQuantity(item.cart_id, item.quantity - 1)} disabled={item.quantity <= 1 || isConfirming}
                                 style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: "4px", width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: item.quantity <= 1 || isConfirming ? "not-allowed" : "pointer", color: T.text, padding: 0 }}>−</button>
                               <span style={{ fontSize: "0.85rem", fontWeight: 600, minWidth: "16px", textAlign: "center", color: T.sub }}>{item.quantity}</span>
-                              <button onClick={() => updateQuantity(item.cart_id, item.quantity + 1)} disabled={isConfirming}
-                                style={{ background: T.bg, border: `1px solid ${T.border}`, borderRadius: "4px", width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: isConfirming ? "not-allowed" : "pointer", color: T.text, padding: 0 }}>+</button>
+                              <button
+                                onClick={() => updateQuantity(item.cart_id, item.quantity + 1)}
+                                disabled={isConfirming || item.quantity >= item.stock_quantity}
+                                title={item.quantity >= item.stock_quantity ? `Only ${item.stock_quantity} in stock` : ""}
+                                style={{
+                                  background: T.bg, border: `1px solid ${T.border}`, borderRadius: "4px",
+                                  width: "24px", height: "24px", display: "flex", alignItems: "center",
+                                  justifyContent: "center",
+                                  cursor: (isConfirming || item.quantity >= item.stock_quantity) ? "not-allowed" : "pointer",
+                                  color: item.quantity >= item.stock_quantity ? T.muted : T.text,
+                                  padding: 0
+                                }}>+</button>
+                              {item.quantity >= item.stock_quantity && (
+                                <span style={{ fontSize: "0.72rem", color: "#F59E0B", fontWeight: 600, background: "#FFFBEB", border: "1px solid #FDE68A", borderRadius: "4px", padding: "1px 5px", whiteSpace: "nowrap" }}>
+                                  Max stock
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>
